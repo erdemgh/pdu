@@ -33,5 +33,4 @@ def submit():
         return "Geçersiz komut. Sadece '0', '1', 'c' veya 'q' kabul edilir."
 
 if __name__ == '__main__':
-    #app.run(debug=True)
     app.run(debug=True, host='0.0.0.0', port=2130)
