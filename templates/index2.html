@@ -18,36 +18,46 @@
 </head>
 <body>
     <h1>Seri Port Kontrol</h1>
-    <form id="commandForm">
-        <button type="button" name="command" value="1" class="btn-ac" onclick="sendCommand(this.value)">Aç</button>
-        <button type="button" name="command" value="0" class="btn-kapat" onclick="sendCommand(this.value)">Kapat</button>
-        <button type="button" name="command" value="c" onclick="sendCommand(this.value)">Kontrol Et</button>
+    <form id="commandForm" method="post">
+        <button type="button" name="command" value="1" class="btn-ac" onclick="sendCommand('1')">Aç</button>
+        <button type="button" name="command" value="0" class="btn-kapat" onclick="sendCommand('0')">Kapat</button>
+        <button type="button" name="command" value="c" onclick="sendCommand('c')">Kontrol Et</button>
     </form>
 
     <div id="response" style="background-color: #FFFFFF;"></div> <!-- Başlangıçta beyaz arka plan rengi -->
 
     <script>
         const responseDiv = document.getElementById('response');
-        const commandForm = document.getElementById('commandForm');
 
         function sendCommand(command) {
             const formData = new FormData();
             formData.append('command', command);
 
+<<<<<<< HEAD
             fetch('/submit?command=' + command, {
                 method: 'GET',
+=======
+            fetch('/submit', {
+                method: 'POST',  // POST isteği olarak gönderin
+                body: formData,
+>>>>>>> parent of f966f84 (1739)
             })
             .then(response => response.text())
             .then(data => {
                 if (data === '1') {
+<<<<<<< HEAD
                     responseDiv.style.backgroundColor = '#6DBE45'; // Yeşil
                 } else if (data === '0') {
                     responseDiv.style.backgroundColor = '#D73E31'; // Kırmızı
+=======
+                    responseDiv.style.backgroundColor = '#6DBE45';
+                } else if (data === '0') {
+                    responseDiv.style.backgroundColor = '#D73E31';
+>>>>>>> parent of f966f84 (1739)
                 }
             });
         }
 
-        // Sayfa yüklendiğinde "c" komutunu otomatik olarak gönderelim
         window.onload = function() {
             sendCommand('c');
         };
