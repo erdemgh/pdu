@@ -12,28 +12,27 @@ relay_status = "0"
 
 # Fonksiyon telegram mesajı göndermek için ve içeriği ekrana yazdırmak için
 def send_telegram_message(response):
-    if response == "1":
-        hostname = requests.get('http://169.254.169.254/latest/meta-data/hostname').text
-        timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
-        message = f"""
+    hostname = requests.get('http://169.254.169.254/latest/meta-data/hostname').text
+    timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
+    message = f"""
 Hostname: {hostname}
-Enerji açıldı!
+Enerji {response}!
 
 {timestamp}
 """
 
-        print("Telegram Mesajı:")
-        print(message)
+    print("Telegram Mesajı:")
+    print(message)
 
-        telegram_bot_api_token = '6825685191:AAEZapCvF64Q1Go8KfCRVAXQrfVBSVrX-j8'
-        telegram_chat_id = '-4055301255'
+    telegram_bot_api_token = '6825685191:AAEZapCvF64Q1Go8KfCRVAXQrfVBSVrX-j8'
+    telegram_chat_id = '-4055301255'
 
-        data = {
-            'chat_id': telegram_chat_id,
-            'text': message
-        }
+    data = {
+        'chat_id': telegram_chat_id,
+        'text': message
+    }
 
-        response = requests.post(f'https://api.telegram.org/bot{telegram_bot_api_token}/sendMessage', data=data)
+    response = requests.post(f'https://api.telegram.org/bot{telegram_bot_api_token}/sendMessage', data=data)
 
 # Ekrana röle durumunu yazdırmak için
 def print_relay_status():
@@ -58,16 +57,21 @@ def submit():
         ser.write(command.encode())
         time.sleep(0.30)
         data = ser.readline()
-        print_relay_status()
+        # Eğer röle durumu değiştiyse, ekrana yazdır ve Telegram mesajı gönder
+        if relay_status != command:
+            relay_status = command
+            print_relay_status()
+            send_telegram_message(command)
         return data.decode()
     elif command in ['0', '1']:
         ser.write(command.encode())
         time.sleep(0.30)
         data = ser.readline()
-        relay_status = command  # Röle durumunu güncelle
-        print_relay_status()
-        # Telegram mesajını gönder ve içeriği ekrana yazdır
-        send_telegram_message(command)
+        # Eğer röle durumu değiştiyse, ekrana yazdır ve Telegram mesajı gönder
+        if relay_status != command:
+            relay_status = command
+            print_relay_status()
+            send_telegram_message(command)
         return data.decode()
     else:
         return "Geçersiz komut. Sadece '0', '1', 'c' veya 'q' kabul edilir."
