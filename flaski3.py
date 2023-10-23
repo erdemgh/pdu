@@ -6,9 +6,11 @@ ser = serial.Serial('/dev/ttyUSB0', 9600)
 
 app = Flask(__name__)
 
+
 @app.route('/')
 def index():
     return render_template('index3.html')  # index2.html kullan
+
 
 @app.route('/submit', methods=['GET', 'POST'])  # Hem GET hem de POST isteklerini kabul et
 def submit():
@@ -31,6 +33,7 @@ def submit():
         return data.decode()
     else:
         return "Geçersiz komut. Sadece '0', '1', 'c' veya 'q' kabul edilir."
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=2130)
