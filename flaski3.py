@@ -1,10 +1,38 @@
 import serial
 import time
 from flask import Flask, render_template, request
+import requests
 
 ser = serial.Serial('/dev/ttyUSB0', 9600)
 
-app = Flask(__name__)
+app = Flask(__name)
+
+# Fonksiyon telegram mesajı göndermek için
+def send_telegram_message(response):
+    if response == "1":
+        message = f"""
+Hostname: {requests.get('http://169.254.169.254/latest/meta-data/hostname').text}
+Enerji açıldı!
+
+{time.strftime('%Y-%m-%d %H:%M:%S')}
+"""
+    elif response == "0":
+        message = f"""
+Hostname: {requests.get('http://169.254.169.254/latest/meta-data/hostname').text}
+Enerji kesildi!
+
+{time.strftime('%Y-%m-%d %H:%M:%S')}
+"""
+
+    telegram_bot_api_token = '6825685191:AAEZapCvF64Q1Go8KfCRVAXQrfVBSVrX-j8'
+    telegram_chat_id = '-4055301255'
+
+    data = {
+        'chat_id': telegram_chat_id,
+        'text': message
+    }
+
+    response = requests.post(f'https://api.telegram.org/bot{telegram_bot_api_token}/sendMessage', data=data)
 
 @app.route('/')
 def index():
@@ -28,10 +56,11 @@ def submit():
         ser.write(command.encode())
         time.sleep(0.30)
         data = ser.readline()
+        # Telegram mesajını gönder
+        send_telegram_message(command)
         return data.decode()
     else:
         return "Geçersiz komut. Sadece '0', '1', 'c' veya 'q' kabul edilir."
 
 if __name__ == '__main__':
-    #app.run(debug=True)
     app.run(debug=True, host='0.0.0.0', port=2130)
