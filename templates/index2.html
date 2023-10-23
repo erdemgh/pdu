@@ -39,7 +39,12 @@
             })
             .then(response => response.text())
             .then(data => {
-                responseDiv.innerHTML = (data === '1') ? 'Enerji Açık' : 'Enerji Kapalı';
+                responseDiv.innerHTML = data;
+                if (data === '1') {
+                    responseDiv.style.backgroundColor = '#6DBE45'; /* Koyu pastel yeşil */
+                } else if (data === '0') {
+                    responseDiv.style.backgroundColor = '#D73E31'; /* Koyu pastel kırmızı */
+                }
             });
         }
 
@@ -50,5 +55,3 @@
     </script>
 </body>
 </html>
-// revertemedik
-
