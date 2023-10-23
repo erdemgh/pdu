@@ -5,7 +5,7 @@ import requests
 
 ser = serial.Serial('/dev/ttyUSB0', 9600)
 
-app = Flask(__name)
+app = Flask(__name__)
 
 # Fonksiyon telegram mesajı göndermek için
 def send_telegram_message(response):
