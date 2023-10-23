@@ -7,32 +7,30 @@ ser = serial.Serial('/dev/ttyUSB0', 9600)
 
 app = Flask(__name__)
 
-# Fonksiyon telegram mesajı göndermek için
+# Fonksiyon telegram mesajı göndermek için ve içeriği ekrana yazdırmak için
 def send_telegram_message(response):
     if response == "1":
+        hostname = requests.get('http://169.254.169.254/latest/meta-data/hostname').text
+        timestamp = time.strftime('%Y-%m-%d %H:%M:%S')
         message = f"""
-Hostname: {requests.get('http://169.254.169.254/latest/meta-data/hostname').text}
+Hostname: {hostname}
 Enerji açıldı!
 
-{time.strftime('%Y-%m-%d %H:%M:%S')}
-"""
-    elif response == "0":
-        message = f"""
-Hostname: {requests.get('http://169.254.169.254/latest/meta-data/hostname').text}
-Enerji kesildi!
-
-{time.strftime('%Y-%m-%d %H:%M:%S')}
+{timestamp}
 """
 
-    telegram_bot_api_token = '6825685191:AAEZapCvF64Q1Go8KfCRVAXQrfVBSVrX-j8'
-    telegram_chat_id = '-4055301255'
+        print("Telegram Mesajı:")
+        print(message)
 
-    data = {
-        'chat_id': telegram_chat_id,
-        'text': message
-    }
+        telegram_bot_api_token = '6825685191:AAEZapCvF64Q1Go8KfCRVAXQrfVBSVrX-j8'
+        telegram_chat_id = '-4055301255'
 
-    response = requests.post(f'https://api.telegram.org/bot{telegram_bot_api_token}/sendMessage', data=data)
+        data = {
+            'chat_id': telegram_chat_id,
+            'text': message
+        }
+
+        response = requests.post(f'https://api.telegram.org/bot{telegram_bot_api_token}/sendMessage', data=data)
 
 @app.route('/')
 def index():
@@ -56,7 +54,7 @@ def submit():
         ser.write(command.encode())
         time.sleep(0.30)
         data = ser.readline()
-        # Telegram mesajını gönder
+        # Telegram mesajını gönder ve içeriği ekrana yazdır
         send_telegram_message(command)
         return data.decode()
     else:
