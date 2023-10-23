@@ -14,6 +14,12 @@
             background-color: #D73E31; /* Koyu pastel kırmızı */
             color: white;
         }
+
+        /* Durum metni stilleri */
+        .status {
+            font-size: 16px;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -40,11 +46,12 @@
             .then(response => response.text())
             .then(data => {
                 responseDiv.innerHTML = data;
-                if (data === '1') {
-                    responseDiv.style.backgroundColor = '#6DBE45'; /* Koyu pastel yeşil */
-                } else if (data === '0') {
-                    responseDiv.style.backgroundColor = '#D73E31'; /* Koyu pastel kırmızı */
-                }
+
+                // Durumu güncelleyin
+                const statusDiv = document.createElement('div');
+                statusDiv.className = 'status';
+                statusDiv.innerHTML = data === '1' ? 'Açık' : 'Kapalı';
+                responseDiv.appendChild(statusDiv);
             });
         }
 
@@ -55,4 +62,3 @@
     </script>
 </body>
 </html>
-
