@@ -7,6 +7,9 @@ ser = serial.Serial('/dev/ttyUSB0', 9600)
 
 app = Flask(__name__)
 
+# Röle durumu, başlangıçta kapalı
+relay_status = "0"
+
 # Fonksiyon telegram mesajı göndermek için ve içeriği ekrana yazdırmak için
 def send_telegram_message(response):
     if response == "1":
@@ -32,12 +35,18 @@ Enerji açıldı!
 
         response = requests.post(f'https://api.telegram.org/bot{telegram_bot_api_token}/sendMessage', data=data)
 
+# Ekrana röle durumunu yazdırmak için
+def print_relay_status():
+    print(f"Röle Durumu: {relay_status}")
+
 @app.route('/')
 def index():
     return render_template('index3.html')  # index2.html kullan
 
 @app.route('/submit', methods=['GET', 'POST'])  # Hem GET hem de POST isteklerini kabul et
 def submit():
+    global relay_status  # relay_status değişkenini global olarak kullanmak için
+
     if request.method == 'GET':
         command = request.args.get('command')  # GET ile gelen 'command' parametresini al
     elif request.method == 'POST':
@@ -49,11 +58,14 @@ def submit():
         ser.write(command.encode())
         time.sleep(0.30)
         data = ser.readline()
+        print_relay_status()
         return data.decode()
     elif command in ['0', '1']:
         ser.write(command.encode())
         time.sleep(0.30)
         data = ser.readline()
+        relay_status = command  # Röle durumunu güncelle
+        print_relay_status()
         # Telegram mesajını gönder ve içeriği ekrana yazdır
         send_telegram_message(command)
         return data.decode()
