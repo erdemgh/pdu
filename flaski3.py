@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index2.html')  # index2.html kullan
+    return render_template('index3.html')  # index2.html kullan
 
 @app.route('/submit', methods=['GET', 'POST'])  # Hem GET hem de POST isteklerini kabul et
 def submit():
