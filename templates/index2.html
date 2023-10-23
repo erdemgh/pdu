@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
     <title>Seri Port Kontrol</title>
     <style>
@@ -21,14 +20,14 @@
     <h1>Seri Port Kontrol</h1>
     <form id="commandForm">
         <button type="button" name="command" value="1" class="btn-ac" onclick="sendCommand(this.value)">Aç</button>
-        <button type="button" name="command" value="0" class "btn-kapat" onclick="sendCommand(this.value)">Kapat</button>
+        <button type="button" name="command" value="0" class="btn-kapat" onclick="sendCommand(this.value)">Kapat</button>
         <button type="button" name="command" value="c" onclick="sendCommand(this.value)">Kontrol Et</button>
     </form>
 
-    <div id="responseText"></div>
+    <div id="response"></div>
 
     <script>
-        const responseText = document.getElementById('responseText');
+        const responseDiv = document.getElementById('response');
         const commandForm = document.getElementById('commandForm');
 
         function sendCommand(command) {
@@ -40,12 +39,11 @@
             })
             .then(response => response.text())
             .then(data => {
+                responseDiv.innerHTML = data;
                 if (data === '1') {
-                    responseText.innerHTML = 'Enerji Açık';
+                    responseDiv.style.backgroundColor = '#6DBE45'; /* Koyu pastel yeşil */
                 } else if (data === '0') {
-                    responseText.innerHTML = 'Enerji Kapalı';
-                } else {
-                    responseText.innerHTML = data;
+                    responseDiv.style.backgroundColor = '#D73E31'; /* Koyu pastel kırmızı */
                 }
             });
         }
