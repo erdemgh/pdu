@@ -42,14 +42,14 @@ def print_relay_status():
 def index():
     return render_template('index3.html')  # index2.html kullan
 
-@app.route('/submit', methods=['GET', 'POST'])  # Hem GET hem de POST isteklerini kabul et
+@app.route('/submit', methods=['GET', 'POST'])
 def submit():
     global relay_status  # relay_status değişkenini global olarak kullanmak için
 
     if request.method == 'GET':
-        command = request.args.get('command')  # GET ile gelen 'command' parametresini al
+        command = request.args.get('command')
     elif request.method == 'POST':
-        command = request.form['command']  # POST ile gelen 'command' parametresini al
+        command = request.form['command']
 
     if command.lower() == 'q':
         return "Program sonlandırıldı."
