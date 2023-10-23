@@ -13,7 +13,7 @@ def index():
 @app.route('/submit', methods=['GET', 'POST'])  # Hem GET hem de POST isteklerini kabul et
 def submit():
     if request.method == 'GET':
-        command = request.args.get('command')  # GET ile gelen 'command' parametresini al
+        command = request.args.get('command')  # GET ile gelen 'command' parametresini
     elif request.method == 'POST':
         command = request.form['command']  # POST ile gelen 'command' parametresini al
 
