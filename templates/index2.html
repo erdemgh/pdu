@@ -34,16 +34,17 @@
             const formData = new FormData();
             formData.append('command', command);
 
-            fetch('/submit?command=' + command, {  // URL'ye komutu ekleyin
-                method: 'GET',  // GET isteği olarak gönderin
+            fetch('/submit?command=' + command, {
+                method: 'GET',
             })
             .then(response => response.text())
             .then(data => {
-                responseDiv.innerHTML = data;
                 if (data === '1') {
                     responseDiv.style.backgroundColor = '#6DBE45'; /* Koyu pastel yeşil */
+                    responseDiv.innerHTML = 'Enerji Açık';
                 } else if (data === '0') {
                     responseDiv.style.backgroundColor = '#D73E31'; /* Koyu pastel kırmızı */
+                    responseDiv.innerHTML = 'Enerji Kapalı';
                 }
             });
         }
