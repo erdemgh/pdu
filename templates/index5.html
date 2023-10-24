@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seri Port Kontrol</title>
+    <style>
+        /* Aç butonu stilleri */
+        .btn-ac {
+            background-color: #6DBE45; /* Koyu pastel yeşil */
+            color: white;
+        }
+
+        /* Kapat butonu stilleri */
+        .btn-kapat {
+            background-color: #D73E31; /* Koyu pastel kırmızı */
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Seri Port Kontrol</h1>
+    <form id="commandForm">
+        <button type="button" name="command" value="1" class="btn-ac" onclick="sendCommand(this.value)">Aç</button>
+        <button type="button" name="command" value="0" class="btn-kapat" onclick="sendCommand(this.value)">Kapat</button>
+        <button type="button" name="command" value="c" onclick="sendCommand(this.value)">Kontrol Et</button>
+        <button type="button" name="command" value="t" onclick="sendCommand(this.value)">Type</button>
+
+    </form>
+
+    <div id="response"></div>
+
+    <script>
+        const responseDiv = document.getElementById('response');
+        const commandForm = document.getElementById('commandForm');
+
+        function sendCommand(command) {
+            const formData = new FormData();
+            formData.append('command', command);
+
+            fetch('/submit?command=' + command, {  // URL'ye komutu ekleyin
+                method: 'GET',  // GET isteği olarak gönderin
+            })
+            .then(response => response.text())
+            .then(data => {
+                responseDiv.innerHTML = data;
+            });
+        }
+
+        // Sayfa yüklendiğinde "c" komutunu otomatik olarak gönderelim
+        window.onload = function() {
+            sendCommand('c');
+        };
+    </script>
+</body>
+
+
+</html>
