@@ -10,10 +10,10 @@ void setup() {
 void loop() {
   if (Serial.available() > 0) {
     command = Serial.read();
-    if (command == '1' || command == 'high') {
+    if (command == '1') {
       digitalWrite(RELAY_PIN, HIGH);
       Serial.println(command);
-    } else if (command == '0' || command == 'low') {
+    } else if (command == '0') {
       digitalWrite(RELAY_PIN, LOW);
       Serial.println(command);
     } else if (command == 'c') {
@@ -22,12 +22,7 @@ void loop() {
       } else {
         Serial.println("0");
       }
-    } else if (command == 'check') {
-      if (digitalRead(RELAY_PIN) == HIGH) {
-        Serial.println("high");
-      } else {
-        Serial.println("low");
-      }
+    }
     }
   }
-}
+

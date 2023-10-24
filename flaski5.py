@@ -1,19 +1,21 @@
 import serial
 import time
 from flask import Flask, render_template, request
+import threading
 
 ser = serial.Serial('/dev/ttyUSB0', 9600)
+#ser = serial.Serial('/dev/cu.usbserial-142230', 9600)
 
 app = Flask(__name__)
 
 ip_address = '0.0.0.0'
 port = 2135
 
+lock = threading.Lock()
 
 @app.route('/')
 def index():
     return render_template('index5.html')
-
 
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
@@ -41,11 +43,11 @@ def submit():
     if command_response == "Program terminated.":
         return command_response
     else:
-        ser.write(command_response.encode())
-        time.sleep(0.30)
-        data = ser.readline()
+        with lock:
+            ser.write(command_response.encode())
+            time.sleep(0.3)
+            data = ser.readline()
         return data.decode()
-
 
 if __name__ == '__main__':
     app.run(debug=True, host=ip_address, port=port)

@@ -2,7 +2,8 @@ import serial
 import time
 from flask import Flask, render_template, request
 
-ser = serial.Serial('/dev/ttyUSB0', 9600)
+#ser = serial.Serial('/dev/ttyUSB0', 9600)
+ser = serial.Serial('/dev/cu.usbserial-142230', 9600)
 
 app = Flask(__name__)
 
