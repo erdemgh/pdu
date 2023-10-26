@@ -15,7 +15,7 @@ lock = threading.Lock()
 
 @app.route('/')
 def index():
-    return render_template('index5.html')
+    return render_template('pdu.html')
 
 @app.route('/submit', methods=['GET', 'POST'])
 def submit():
