@@ -9,7 +9,7 @@ delay_seconds = 69
 
 if len(sys.argv) < 2:
     print("Kullanım hatası: 'usage' argümanı eksik.")
-    print("Kullanım: python3 cron_handler.py <usage>")
+    print("Kullanım: python3 pdu_cron_handler.py <usage>")
     sys.exit(1)
 
 usage = sys.argv[1]
