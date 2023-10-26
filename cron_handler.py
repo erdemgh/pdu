@@ -18,13 +18,15 @@ cron_rule = f"{delay_seconds} * * * * sleep {delay_seconds} && python3 {pdu_star
 if cron_rule in stdout.decode():
     print("Kayıt mevcut ve güncel")
 else:
-    # Yeni crontab kuralını ekle
-    with open('tmp_cron', 'w') as f:
+    # Geçici bir crontab dosyası oluştur
+    with open('/tmp/pdu_tmp_cron', 'w') as f:
         f.write(stdout.decode())
         f.write(cron_rule)
 
     # Yeni crontab'ı yükle
-    subprocess.Popen(['crontab', 'tmp_cron'])
-    os.remove('tmp_cron')
+    subprocess.Popen(['crontab', '/tmp/pdu_tmp_cron'])
+
+    # Geçici dosyayı sil
+    os.remove('/tmp/pdu_tmp_cron')
 
 print("Crontab kuralı başarıyla güncellendi.")
