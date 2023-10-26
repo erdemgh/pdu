@@ -1,32 +1,27 @@
 import os
 import subprocess
+import re
 
-# pdu_starter.py'nin tam yolunu al
+tmp_cron_file = "/tmp/pdu_tmp_cron"
+
 pdu_starter_path = os.path.abspath("pdu_starter.py")
 
-# 69 saniye gecikme süresi
 delay_seconds = 69
 
-# Cron tabloyu oku
 proc = subprocess.Popen(['crontab', '-l'], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 stdout, stderr = proc.communicate()
+cron_content = stdout.decode()
 
-# Crontab kuralını oluştur
-cron_rule = f"{delay_seconds} * * * * sleep {delay_seconds} && python3 {pdu_starter_path}"
+new_cron_rule = f"@reboot sleep {delay_seconds} && python3 {pdu_starter_path}"
 
-# Crontab kuralının zaten mevcut olup olmadığını kontrol et
-if cron_rule in stdout.decode():
-    print("Kayıt mevcut ve güncel")
-else:
-    # Geçici bir crontab dosyası oluştur
-    with open('/tmp/pdu_tmp_cron', 'w') as f:
-        f.write(stdout.decode())
-        f.write(cron_rule)
+if re.search(rf"python3 {re.escape(pdu_starter_path)}", cron_content):
+    cron_content = re.sub(rf"@reboot sleep \d+ && python3 {re.escape(pdu_starter_path)}\n", '', cron_content)
 
-    # Yeni crontab'ı yükle
-    subprocess.Popen(['crontab', '/tmp/pdu_tmp_cron'])
+cron_content += new_cron_rule + '\n'
 
-    # Geçici dosyayı sil
-    os.remove('/tmp/pdu_tmp_cron')
+with open(tmp_cron_file, 'w') as f:
+    f.write(cron_content)
+
+subprocess.Popen(['crontab', tmp_cron_file])
 
 print("Crontab kuralı başarıyla güncellendi.")
