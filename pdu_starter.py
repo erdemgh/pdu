@@ -1,8 +1,10 @@
 import threading
 import subprocess
 
+usage = "permanent"  # permanent ise crontab'a görev ekler, "temporary" ise crontab'daki absolute pathli kuralı siler.
+
 def run_cron_handler():
-    subprocess.run(["python3", "cron_handler.py"])
+    subprocess.run(["python3", "cron_handler.py", usage])
 
 def run_relay_controller_api_interface():
     subprocess.run(["python3", "relay_controller_api_interface.py"])
