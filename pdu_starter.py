@@ -5,7 +5,7 @@ def run_relay_controller_api_interface():
     subprocess.run(["python3", "relay_controller_api_interface.py"])
 
 def run_telegram_bot():
-    subprocess.run(["python3", "pdu_telegram_bot.py"])
+    subprocess.run(["python3", "telegram_bot.py"])
 
 if __name__ == "__main__":
     relay_controller_api_interface_thread = threading.Thread(target=run_relay_controller_api_interface)
