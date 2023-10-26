@@ -31,8 +31,8 @@ def submit():
         'check': 'c',
         '0': '0',
         '1': '1',
-        'open': '1',
-        'closed': '0',
+        'open': '0',
+        'closed': '1',
         't': 't',
         'type': 't',
     }
