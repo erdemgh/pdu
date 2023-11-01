@@ -58,12 +58,12 @@ void defineVarVals() {
   config_location = EEPROM.read(ADDR_CONFIG_LOCATION);
   if (config_location != '1') {
     relay_pin = 7;
-    relay_mode = '7';
-    timer_mode = '7';
-    ddmin = 7;
-    ddmax = 7;
-    cdmin = 7;
-    cdmax = 7;
+    relay_mode = '1';
+    timer_mode = '1';
+    ddmin = 6;
+    ddmax = 301;
+    cdmin = 11;
+    cdmax = 601;
     Serial.println("\ntemporary setting allowed\n");
   } else {
     config_location = EEPROM.read(ADDR_CONFIG_LOCATION);
@@ -75,6 +75,11 @@ void defineVarVals() {
     EEPROM.get(ADDR_CD_MIN, cdmin);
     EEPROM.get(ADDR_CD_MAX, cdmax);
     Serial.println("\npermanent setting allowed\n");
+  }
+  if (relay_mode = '0') {
+    digitalWrite(relay_pin, HIGH);
+  } else {
+    digitalWrite(relay_pin, LOW);
   }
 }
 
