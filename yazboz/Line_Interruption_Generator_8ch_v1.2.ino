@@ -46,7 +46,6 @@ void setup() {
 
 void controlRelays(bool relayState, unsigned long stateDelay, int groupStart, int groupEnd) {
   //Serial.println(String(stateDelay / 1000) + " saniye " + (relayState ? "ON" : "OFF") + " bekleyecegiz.");
-
   updateRelayStates(groupStart, groupEnd, relayState);
   delay(stateDelay);
 }
