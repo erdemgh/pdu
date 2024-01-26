@@ -2,7 +2,8 @@ import serial
 import time
 import sys
 
-usb_serial_path = '/dev/cu.usbserial-142240'
+#usb_serial_path = '/dev/cu.usbserial-142240'  #macos path
+usb_serial_path = '/dev/ttyUSB0'
 
 def send_command(ser, press_duration):
     command = f"{press_duration}\n"
