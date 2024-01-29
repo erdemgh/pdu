@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Servo Kontrol</title>
+</head>
+<body>
+    <h1>Servo Kontrol Arayüzü</h1>
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="post" action="/">
+        <label for="press_duration">Basma Süresi (saniye):</label>
+        <input type="number" name="press_duration" required>
+        <button type="submit">Gönder</button>
+    </form>
+
+    {% if response %}
+        <p>Arduino'dan gelen yanıt: {{ response }}</p>
+    {% endif %}
+</body>
+</html>
